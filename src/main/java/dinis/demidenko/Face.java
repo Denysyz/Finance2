@@ -12,7 +12,6 @@ public class Face {
     DataBase db = new DataBase();
 
     JFrame frame = new JFrame("Finance");
-    JFrame frameSetting = new JFrame("setting");
 
     JTextField textCountGood = new JTextField();
     JTextField textNameGood = new JTextField();
@@ -31,20 +30,27 @@ public class Face {
 
     JButton buttonOkGood = new JButton("OK!");
     JButton buttonOkProfit = new JButton("OK!");
+    JButton buttonCard = new JButton("Картка");
 
     JCheckBox checkBoxCardGood = new JCheckBox();
     JCheckBox checkBoxCardProfit = new JCheckBox();
 
+    ///////
 
+    JFrame frameCard = new JFrame("Card");
 
-    
+    JTextField textFrameTwo = new JTextField();
+
+    JLabel labelFrameTwo = new JLabel("сума:");
+
+    JButton buttonFrameTwoPut = new JButton("Покласти");
+    JButton buttonFrameTwoShoot = new JButton("Знять");
+
+    //////////////
+
     public void face(){
         frame.setSize(550, 200);
         frame.setLayout(null);
-
-        frameSetting.setLayout(null);
-
-        /////
 
         textCountGood.setBounds(50, 10, 50, 20);
         frame.add(textCountGood);
@@ -78,7 +84,6 @@ public class Face {
         labelTextCardTwo.setBounds(340, 38, 60, 20);
         frame.add(labelTextCardTwo);
 
-
         labelOnHand.setBounds(10,70, 150, 20);
         labelOnHand.setText("На руках: " + String.valueOf(db.up("profit") - db.up("fin")) + " грн.");
         frame.add(labelOnHand);
@@ -99,6 +104,9 @@ public class Face {
 
         buttonOkProfit.setBounds(430, 40, 60, 20);
         frame.add(buttonOkProfit);
+
+        buttonCard.setBounds(180, 70, 150, 20);
+        frame.add(buttonCard);
 
         //////
 
@@ -145,6 +153,57 @@ public class Face {
                 textNameProfit.setText("");
             }
         });
+
+        buttonCard.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                frameCard.setVisible(true);
+            }
+        });
+
+
+        frameCard.setSize(200, 120);
+        frameCard.setLayout(null);
+
+        //////
+
+        labelFrameTwo.setBounds(10, 8, 40, 20);
+        frameCard.add(labelFrameTwo);
+
+        /////
+
+        textFrameTwo.setBounds(50, 10, 120, 20);
+        frameCard.add(textFrameTwo);
+
+        buttonFrameTwoPut.setBounds(10, 40, 90, 20);
+        frameCard.add(buttonFrameTwoPut);
+
+        buttonFrameTwoShoot.setBounds(110, 40, 70, 20);
+        frameCard.add(buttonFrameTwoShoot);
+
+        /////
+
+        buttonFrameTwoPut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                db.addBD("INSERT INTO profitCard(count, good) Values(" + textFrameTwo.getText() + ", 'Перевод');");
+                db.addBD("INSERT INTO fin(count, good) Values(" + textFrameTwo.getText() + ", 'Перевод');");
+                labelOnline.setText("Онлайн: " + String.valueOf(db.up("profitCard") - db.up("finCard")) + " грн.");
+                labelOnHand.setText("На руках: " + String.valueOf(db.up("profit") - db.up("fin")) + " грн.");
+                labelTogether.setText("Разом: " + String.valueOf(db.up("profit") - db.up("fin") + (db.up("profitCard")
+                        - db.up("finCard"))) + " грн.");
+            }
+        });
+
+        buttonFrameTwoShoot.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                db.addBD("INSERT INTO finCard(count, good) Values(" + textFrameTwo.getText() + ", 'Перевод');");
+                db.addBD("INSERT INTO profit(count, good) Values(" + textFrameTwo.getText() + ", 'Перевод');");
+                labelOnline.setText("Онлайн: " + String.valueOf(db.up("profitCard") - db.up("finCard")) + " грн.");
+                labelOnHand.setText("На руках: " + String.valueOf(db.up("profit") - db.up("fin")) + " грн.");
+                labelTogether.setText("Разом: " + String.valueOf(db.up("profit") - db.up("fin") + (db.up("profitCard")
+                        - db.up("finCard"))) + " грн.");
+            }
+        });
+
         frame.setVisible(true);
 
     }

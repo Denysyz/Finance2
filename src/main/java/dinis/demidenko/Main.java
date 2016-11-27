@@ -8,7 +8,5 @@ public class Main {
 
         Face f = new Face();
         f.face();
-
-
     }
 }
